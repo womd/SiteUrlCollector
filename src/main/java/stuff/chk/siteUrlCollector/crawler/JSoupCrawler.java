@@ -53,6 +53,10 @@ public class JSoupCrawler implements ICrawler {
 
             boolean skip = false;
 
+            if(link.length() == 0){
+                skip = true;
+            }
+
             //only internal links
             if(!link.contains(domain.getTld())){
                 skip = true;
@@ -66,11 +70,16 @@ public class JSoupCrawler implements ICrawler {
             }
 
 
-
             if(skip == false){
-                result.add(link);
+                if(!result.contains(link)) {
+                    result.add(link);
+                }
             }
         }
         return result;
     }
+
+
+
+
 }

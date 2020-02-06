@@ -9,6 +9,7 @@ import java.sql.Date;
 @Data
 @Entity
 @Table(name = "visits")
+@SequenceGenerator(name = "SQ_VISIT", sequenceName = "SQ_VISIT",  initialValue = 100)
 public class Visit implements Serializable {
 
     @Id

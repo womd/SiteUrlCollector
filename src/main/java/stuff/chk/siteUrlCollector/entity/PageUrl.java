@@ -9,6 +9,7 @@ import java.util.Set;
 @Data
 @Entity
 @Table(name = "pageurls")
+@SequenceGenerator(name = "SQ_PAGEURL", sequenceName = "SQ_PAGEURL",  initialValue = 100)
 public class PageUrl implements Serializable {
 
     @Id

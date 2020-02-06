@@ -12,6 +12,7 @@ import stuff.chk.siteUrlCollector.entity.Domain;
 import stuff.chk.siteUrlCollector.entity.PageUrl;
 import stuff.chk.siteUrlCollector.entity.SkipString;
 
+import java.net.SocketTimeoutException;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -29,7 +30,8 @@ public class CrawlingScheduler {
     @Value("${scheduler.crawling.active}")
     private boolean schedulerActive;
 
-    @Scheduled(fixedDelay=10000)
+
+    @Scheduled(fixedDelayString ="${scheduler.crawling.delay}")
     public void crawl(){
 
         if(schedulerActive) {
@@ -55,7 +57,11 @@ public class CrawlingScheduler {
                         //set visits
                         generalDAO.saveVisit(pu, 200);
 
-                    } catch (Exception e) {
+                    } catch (SocketTimeoutException ste) {
+                        log.error(ste.getMessage());
+                        generalDAO.saveVisit(pu, 408);
+                    }
+                    catch (Exception e){
                         log.error(e.getMessage());
                         generalDAO.saveVisit(pu, 400);
                     }

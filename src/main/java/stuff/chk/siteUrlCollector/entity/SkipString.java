@@ -8,6 +8,7 @@ import java.io.Serializable;
 @Data
 @Entity
 @Table(name = "skipstrings")
+@SequenceGenerator(name = "SQ_SKIPSTRING", sequenceName = "SQ_SKIPSTRING",  initialValue = 100)
 public class SkipString implements Serializable {
 
     @Id

@@ -10,6 +10,7 @@ import java.util.Set;
 @Data
 @Entity
 @Table(name = "domains")
+@SequenceGenerator(name = "SQ_DOMAIN", sequenceName = "SQ_DOMAIN",  initialValue = 100)
 public class Domain implements Serializable {
 
     @Id

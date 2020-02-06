@@ -80,6 +80,10 @@ public class CurlController {
                 return new ResponseEntity<>(domain, HttpStatus.OK);
             } else {
                 Domain saved = generalDAO.addDomain(tld);
+                PageUrl pu = new PageUrl();
+                pu.setDomain(saved);
+                pu.setUrl(domain.getTld());
+                generalDAO.getPageUrlRepository().save(pu);
                 return new ResponseEntity<>(saved, HttpStatus.OK);
             }
         }
@@ -89,27 +93,7 @@ public class CurlController {
         return  ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
     }
 
-    @RequestMapping(value = "startForDomain", method = RequestMethod.GET)
-    public ResponseEntity startForDomain(@RequestParam(value = "domainId") Long domainId){
-
-        try {
-
-            Domain domain = generalDAO.getDomainRepository().findById(domainId).orElse(null);
-            if(domain != null) {
-                List<String> links = crawler.extractLinks(domain.getTld());
-                List<SkipString> skipStrings =  generalDAO.getSkipStringRepository().findByDomain(domain);
-                List<String> filteredLinks = crawler.filterLinks(links, skipStrings ,domain);
-                List<String> onlyNew = generalDAO.filterExisting(filteredLinks);
-                generalDAO.saveLinks(onlyNew, domain);
-            }
-            return new ResponseEntity<>("ok, process started", HttpStatus.OK);
-        }
-        catch (Exception ex){
-            log.error(ex.getMessage());
-        }
-        return  ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-    }
-
+ 
     @RequestMapping(value = "listUrlsForDomain", method = RequestMethod.GET)
     public ResponseEntity listUrlsForDomain(@RequestParam(value = "domainId") Long domainId){
         try {
